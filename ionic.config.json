@@ -1,0 +1,7 @@
+{
+  "name": "wiener-linien-stations",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
