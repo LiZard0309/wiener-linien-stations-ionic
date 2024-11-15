@@ -1,0 +1,15 @@
+ion-avatar {
+    height: 150px;
+    width: 150px;
+    border-radius: 15%;
+}
+
+ion-item {
+    font-size: 12px;
+    padding: 0px;
+}
+
+#profile-picture-container{
+    margin-top: 12px;
+    margin-bottom: 12px;
+}

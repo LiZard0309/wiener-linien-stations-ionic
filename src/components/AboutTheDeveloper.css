@@ -1,0 +1,23 @@
+#about-the-developer-container {
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+ion-item-divider {
+    margin-top: 12px;
+    background-color: rgba(185, 185, 194, 0.75);
+}
+
+ion-item {
+    font-size: 12px;
+    padding: 0px;
+}
+
+ion-text {
+    font-size: 14px;
+    color: rgba(71, 76, 91, 0.97);
+}
+
+ion-icon {
+    padding-right: 6px;
+}
