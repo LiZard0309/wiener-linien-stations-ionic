@@ -1,5 +1,5 @@
 import './AboutTheApp.css'
-import {IonItem, IonItemDivider, IonItemGroup, IonLabel, IonList, IonText, IonTitle} from "@ionic/react";
+import {IonItem, IonItemDivider, IonItemGroup, IonLabel, IonText} from "@ionic/react";
 
 export const AboutTheApp = () => {
     return (

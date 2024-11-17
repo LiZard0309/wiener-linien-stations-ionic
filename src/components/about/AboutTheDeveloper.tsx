@@ -1,13 +1,11 @@
 import "./AboutTheDeveloper.css"
 import {
-    IonAvatar, IonButton,
     IonItem, IonItemDivider,
     IonItemGroup, IonLabel,
     IonText
 } from "@ionic/react";
 import {DeveloperLocationMap} from "./DeveloperLocationMap";
 import ProfilePicturePicker from "./ProfilePicturePicker";
-import React, {useRef, useState} from "react";
 
 export const AboutTheDeveloper = () => {
 

@@ -1,7 +1,7 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import './AboutTab.css';
-import {AboutTheApp} from "../components/AboutTheApp";
-import {AboutTheDeveloper} from "../components/AboutTheDeveloper";
+import {AboutTheApp} from "../components/about/AboutTheApp";
+import {AboutTheDeveloper} from "../components/about/AboutTheDeveloper";
 
 const AboutTab: React.FC = () => {
   return (
