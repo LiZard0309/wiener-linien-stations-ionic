@@ -1,6 +1,6 @@
-import {IonHeader, IonList, IonPage, IonTitle, IonToolbar} from '@ionic/react';
+import {IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar} from '@ionic/react';
 import './HomeTab.css';
-import {useAtom} from "jotai";
+import {useAtom, useAtomValue} from "jotai";
 import {wienerLinienStationsAtom} from "../atoms/wiener-linien-stations.atom";
 import React, {useEffect, useState} from "react";
 import Papa from "papaparse";
@@ -11,36 +11,6 @@ const HomeTab: React.FC = () => {
     const [wienerLinienStations] = useAtom(wienerLinienStationsAtom);
 
 
-    const [stationsData, setStationsData] = useState<any[]>([]);
-
-
-    useEffect(() => {
-        if (!wienerLinienStations) return;
-
-        // @ts-ignore
-        Papa.parse(wienerLinienStations, {
-            header: true,
-            complete: (result) => {
-                const validData = result.data.filter((item: any) => {
-                    return (
-                        item.NAME &&
-                        item.GEMEINDE &&
-                        !isNaN(item.WGS84_LAT) &&
-                        !isNaN(item.WGS84_LON)
-                    )
-                });
-
-                console.log("Data:", validData);
-
-
-                // @ts-ignore
-                setStationsData(validData);
-            },
-            error: (error: any) => {
-                console.error("error fetching csv: ", error);
-            }
-        });
-    }, [wienerLinienStations]);
 
 
     return (
@@ -52,7 +22,12 @@ const HomeTab: React.FC = () => {
             </IonHeader>
 
             <IonList>
+                {wienerLinienStations?.data?.map((station, index) => (
+                    <IonItem key={index}>
+                        {station.NAME} ({station.GEMEINDE})
+                    </IonItem>
 
+                ))}
 
             </IonList>
 

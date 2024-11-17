@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Camera, CameraResultType, CameraSource} from '@capacitor/camera';
-import {IonAvatar, IonButton, IonImg, IonItem} from "@ionic/react";
+import {IonAvatar, IonButton, IonItem} from "@ionic/react";
 import "./ProfilePicturePicker.css"
 
 
