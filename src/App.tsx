@@ -1,16 +1,16 @@
-import { Redirect, Route } from 'react-router-dom';
+import {Redirect, Route} from 'react-router-dom';
 import {
-  IonApp,
-  IonIcon,
-  IonLabel,
-  IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonTabs,
-  setupIonicReact
+    IonApp,
+    IonIcon,
+    IonLabel,
+    IonRouterOutlet,
+    IonTabBar,
+    IonTabButton,
+    IonTabs,
+    setupIonicReact
 } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
-import {ellipse, home, information, map, square, triangle} from 'ionicons/icons';
+import {IonReactRouter} from '@ionic/react-router';
+import {home, information, map} from 'ionicons/icons';
 import HomeTab from './pages/HomeTab';
 import MapTab from './pages/MapTab';
 import AboutTab from './pages/AboutTab';
@@ -44,48 +44,69 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import {useAtom} from "jotai";
+import {wienerLinienStationsAtom} from "./atoms/wiener-linien-stations.atom";
+import {Storage} from '@ionic/storage';
+import {useEffect, useState} from "react";
+
 
 setupIonicReact();
 
+export const store = new Storage();
 
-const App: React.FC = () => (
+const App: React.FC = () => {
 
+    const [isStorageReady, setIsStorageReady] = useState(false);
 
-    <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/home">
-            <HomeTab />
-          </Route>
-          <Route exact path="/map">
-            <MapTab />
-          </Route>
-          <Route path="/about">
-            <AboutTab />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/home" />
-          </Route>
-        </IonRouterOutlet>
+    useEffect(() => {
+        const initializeStorage = async () => {
+            await store.create();
+            setIsStorageReady(true);
+        };
+        initializeStorage().then(r => console.log("Storage initialized", store));
+    }, []);
 
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="home" href="/home">
-            <IonIcon aria-hidden="true" icon={home} />
-            <IonLabel>Home</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="map" href="/map">
-            <IonIcon aria-hidden="true" icon={map} />
-            <IonLabel>Map</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="about" href="/about">
-            <IonIcon aria-hidden="true" icon={information} />
-            <IonLabel>About</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
-);
+    if (!isStorageReady) {
+        return <div> Loading ... </div>
+    }
+
+    return (
+        <IonApp>
+            <IonReactRouter>
+                <IonTabs>
+                    <IonRouterOutlet>
+                        <Route exact path="/home">
+                            <HomeTab/>
+                        </Route>
+                        <Route exact path="/map">
+                            <MapTab/>
+                        </Route>
+                        <Route path="/about">
+                            <AboutTab/>
+                        </Route>
+                        <Route exact path="/">
+                            <Redirect to="/home"/>
+                        </Route>
+                    </IonRouterOutlet>
+
+                    <IonTabBar slot="bottom">
+                        <IonTabButton tab="home" href="/home">
+                            <IonIcon aria-hidden="true" icon={home}/>
+                            <IonLabel>Home</IonLabel>
+                        </IonTabButton>
+                        <IonTabButton tab="map" href="/map">
+                            <IonIcon aria-hidden="true" icon={map}/>
+                            <IonLabel>Map</IonLabel>
+                        </IonTabButton>
+                        <IonTabButton tab="about" href="/about">
+                            <IonIcon aria-hidden="true" icon={information}/>
+                            <IonLabel>About</IonLabel>
+                        </IonTabButton>
+                    </IonTabBar>
+                </IonTabs>
+            </IonReactRouter>
+        </IonApp>
+    );
+};
 
 export default App;

@@ -1,5 +1,6 @@
 import {atomWithQuery} from "jotai-tanstack-query";
 import Papa from "papaparse";
+import {store} from "../App"
 
 export interface Station {
     NAME: string;
@@ -8,10 +9,18 @@ export interface Station {
     WGS84_LON: number;
 }
 
-export const wienerLinienStationsAtom = atomWithQuery((get) =>
+const wienerLinienStationsAtom = atomWithQuery((get) =>
     ({
         queryKey: ['stations'],
         queryFn: async (): Promise<Station[]> => {
+            //check if there is data in storage
+            const cachedData = await store.get("stationData");
+
+            if (cachedData) {
+                console.log("Cached data available: ", cachedData);
+                return JSON.parse(cachedData);
+            }
+
             const response = await fetch(
                 'https://data.wien.gv.at/csv/wienerlinien-ogd-haltestellen.csv'
             );
@@ -53,3 +62,5 @@ export const wienerLinienStationsAtom = atomWithQuery((get) =>
         },
     })
 );
+
+export {wienerLinienStationsAtom};
