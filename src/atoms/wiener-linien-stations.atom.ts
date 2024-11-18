@@ -60,6 +60,7 @@ const wienerLinienStationsAtom = atomWithQuery((get) =>
             });
 
         },
+        refetchInterval: 10000,
     })
 );
 

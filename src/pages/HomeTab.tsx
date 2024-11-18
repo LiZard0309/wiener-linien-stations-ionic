@@ -13,22 +13,28 @@ import {
 import './HomeTab.css';
 import {useAtom} from "jotai";
 import {Station, wienerLinienStationsAtom} from "../atoms/wiener-linien-stations.atom";
-import React, {useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {Simulate} from "react-dom/test-utils";
 import error = Simulate.error;
-import {pinOutline} from "ionicons/icons";
+import {add, pinOutline} from "ionicons/icons";
 import {NewStationModal} from "../components/station-modal/NewStationModal";
 import {store} from "../App";
 
 const HomeTab: React.FC = () => {
-    const [wienerLinienStations, setWienerLinienStations] = useAtom(wienerLinienStationsAtom);
+    const [wienerLinienStations] = useAtom(wienerLinienStationsAtom);
 
     const [isOpen, setIsOpen] = useState(false);
 
+
     const saveDataToStorage = async (updatedStations: Station[]) => {
-        await store.set("stationData", JSON.stringify(updatedStations))
-        alert("New station saved to storage")
-    }
+        try {
+            await store.set("stationData", JSON.stringify(updatedStations))
+            alert("New station saved to storage")
+        } catch (error) {
+            console.log("Error saving data to storage", error)
+        }
+
+    };
 
     const handleAddNewStation = async (
         stationName: string,
@@ -46,14 +52,12 @@ const HomeTab: React.FC = () => {
 
         console.log("new station", addedStation)
 
-        const updatedStations = [...(wienerLinienStations.data || []), addedStation];
+
+        const updatedStations = [addedStation, ...(wienerLinienStations.data || [])];
         console.log("Updated Stations: ", updatedStations);
 
+        await saveDataToStorage(updatedStations);
 
-        // @ts-ignore
-        setWienerLinienStations(updatedStations);
-
-        await saveDataToStorage(updatedStations)
 
         setIsOpen(false);
     }

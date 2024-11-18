@@ -7,7 +7,7 @@ import {
     IonTabBar,
     IonTabButton,
     IonTabs,
-    setupIonicReact
+    setupIonicReact, useIonViewWillLeave
 } from '@ionic/react';
 import {IonReactRouter} from '@ionic/react-router';
 import {home, information, map} from 'ionicons/icons';
@@ -69,6 +69,7 @@ const App: React.FC = () => {
     if (!isStorageReady) {
         return <div> Loading ... </div>
     }
+
 
     return (
         <IonApp>
