@@ -16,7 +16,7 @@ import {Station, wienerLinienStationsAtom} from "../atoms/wiener-linien-stations
 import React, {useCallback, useEffect, useState} from "react";
 import {Simulate} from "react-dom/test-utils";
 import error = Simulate.error;
-import {add, pinOutline} from "ionicons/icons";
+import {pinOutline} from "ionicons/icons";
 import {NewStationModal} from "../components/station-modal/NewStationModal";
 import {store} from "../App";
 

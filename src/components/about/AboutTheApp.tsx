@@ -1,7 +1,12 @@
 import './AboutTheApp.css'
 import {IonItem, IonItemDivider, IonItemGroup, IonLabel, IonText} from "@ionic/react";
+import packageInfo from "../../../package.json"
 
 export const AboutTheApp = () => {
+    const appVersion = packageInfo.version;
+    const appName = packageInfo.name;
+
+
     return (
         <div id="about-container">
 
@@ -10,23 +15,11 @@ export const AboutTheApp = () => {
                     <IonLabel><IonText>About the app </IonText></IonLabel>
                 </IonItemDivider>
                 <IonItem>
-                    App Name: Wiener Linien Stations
+                    App Name: {appName}
                 </IonItem>
                 <IonItem>
-                    App Version: 0.0.1
+                    App Version: {appVersion}
                 </IonItem>
-                <IonItem>
-                    React-Version: 18.2.0
-                </IonItem>
-
-                <IonItem>
-                    Capacitor-Version: 6.1.2
-                </IonItem>
-
-                <IonItem>
-                    Ionic-React Version: 8.0.0
-                </IonItem>
-
             </IonItemGroup>
 
 
