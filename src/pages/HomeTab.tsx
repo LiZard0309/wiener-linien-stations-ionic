@@ -21,7 +21,7 @@ import {NewStationModal} from "../components/station-modal/NewStationModal";
 import {store} from "../App";
 
 const HomeTab: React.FC = () => {
-    const [wienerLinienStations] = useAtom(wienerLinienStationsAtom);
+    const [wienerLinienStations, setWienerLinienStations] = useAtom(wienerLinienStationsAtom);
 
     //const [stations, setStations] = useState<Station[]>([])
 
@@ -60,8 +60,10 @@ const HomeTab: React.FC = () => {
         const newStationList = [addedStation, ...(wienerLinienStations.data || [])];
 
         console.log("New List", newStationList)
-        //setStations(newStationList);
-        //console.log("Updated Stations: ", stations);
+
+
+        // @ts-ignore
+        setWienerLinienStations({data: newStationList})
 
         await saveDataToStorage(newStationList);
 
