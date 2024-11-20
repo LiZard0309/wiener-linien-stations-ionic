@@ -23,12 +23,17 @@ import {store} from "../App";
 const HomeTab: React.FC = () => {
     const [wienerLinienStations] = useAtom(wienerLinienStationsAtom);
 
+    //const [stations, setStations] = useState<Station[]>([])
+
+
+    console.log("Stations:", wienerLinienStations)
+
     const [isOpen, setIsOpen] = useState(false);
 
 
-    const saveDataToStorage = async (updatedStations: Station[]) => {
+    const saveDataToStorage = async (stations: Station[] | undefined) => {
         try {
-            await store.set("stationData", JSON.stringify(updatedStations))
+            await store.set("stationData", JSON.stringify(stations))
             alert("New station saved to storage")
         } catch (error) {
             console.log("Error saving data to storage", error)
@@ -52,11 +57,13 @@ const HomeTab: React.FC = () => {
 
         console.log("new station", addedStation)
 
+        const newStationList = [addedStation, ...(wienerLinienStations.data || [])];
 
-        const updatedStations = [addedStation, ...(wienerLinienStations.data || [])];
-        console.log("Updated Stations: ", updatedStations);
+        console.log("New List", newStationList)
+        //setStations(newStationList);
+        //console.log("Updated Stations: ", stations);
 
-        await saveDataToStorage(updatedStations);
+        await saveDataToStorage(newStationList);
 
 
         setIsOpen(false);

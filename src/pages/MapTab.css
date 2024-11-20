@@ -9,7 +9,7 @@
 }
 
 /* sizing of map container */
-.leaflet-container {
+#map {
     height: 100vh;
     position: relative;
 }
@@ -19,4 +19,19 @@ tile-layer {
     top: 0;
     bottom: 0;
     width: 100%;
+}
+
+
+#location-button-item {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: transparent;
+    border: none;
+    fill: transparent;
+}
+
+#location-button {
+    z-index: 1001;
 }
