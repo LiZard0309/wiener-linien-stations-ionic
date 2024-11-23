@@ -1,5 +1,5 @@
 import {
-    IonButton,
+    IonButton, IonButtons,
     IonContent,
     IonHeader,
     IonIcon,
@@ -19,12 +19,16 @@ import error = Simulate.error;
 import {pinOutline} from "ionicons/icons";
 import {NewStationModal} from "../components/station-modal/NewStationModal";
 import {store} from "../App";
+import sortBy from "lodash/sortBy";
+import {ListSorter} from "../components/stations-list/ListSorter";
 
 const HomeTab: React.FC = () => {
-    const [wienerLinienStations, setWienerLinienStations] = useAtom(wienerLinienStationsAtom);
+    const [wienerLinienStations] = useAtom(wienerLinienStationsAtom);
 
     //const [stations, setStations] = useState<Station[]>([])
 
+
+    //setStations(wienerLinienStations.data)
 
     console.log("Stations:", wienerLinienStations)
 
@@ -63,13 +67,15 @@ const HomeTab: React.FC = () => {
 
 
         // @ts-ignore
-        setWienerLinienStations({data: newStationList})
+        setWienerLinienStations(newStationList);
+        setIsOpen(false);
 
         await saveDataToStorage(newStationList);
 
 
-        setIsOpen(false);
     }
+
+
 
     return (
         <IonPage>
@@ -77,6 +83,7 @@ const HomeTab: React.FC = () => {
                 <IonToolbar>
                     <IonTitle>List of Wiener Linien Stations</IonTitle>
                 </IonToolbar>
+                <ListSorter/>
             </IonHeader>
             <IonContent>
                 <IonButton id="add-station-button" color="secondary" onClick={() => setIsOpen(true)}>Add new
