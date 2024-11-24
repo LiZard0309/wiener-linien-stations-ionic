@@ -1,5 +1,5 @@
 import {
-    IonButton,
+    IonButton, IonButtons,
     IonContent,
     IonHeader,
     IonIcon,
@@ -26,10 +26,10 @@ const HomeTab: React.FC = () => {
 
     const [stations, setStations] = useState<Station[]>([]);
 
-    const defaultLocation = { latitude: 48.2082, longitude: 16.3738 }; //Vienna coords
+    const defaultLocation = {latitude: 48.2082, longitude: 16.3738}; //Vienna coords
 
     useEffect(() => {
-        if (wienerLinienStations?.data!=undefined) {
+        if (wienerLinienStations?.data != undefined) {
             setStations(wienerLinienStations.data);
         } else {
             setStations([]);
@@ -64,7 +64,7 @@ const HomeTab: React.FC = () => {
         setStations(newStationList);
         setIsOpen(false);
 
-        saveDataToStorage(newStationList);
+        saveDataToStorage(newStationList).then(() => console.log("Saving new Location to storage"));
 
 
     }
@@ -75,26 +75,31 @@ const HomeTab: React.FC = () => {
         } catch (error) {
             console.log("Error saving data to storage", error)
         }
-
     };
-
 
     return (
         <IonPage>
             <IonHeader>
                 <IonToolbar>
                     <IonTitle>List of Wiener Linien Stations</IonTitle>
-                    <ListSorter
-                        stations={stations}
-                        setStations={setStations}
-                        defaultLocation={defaultLocation} />
+
 
                 </IonToolbar>
 
             </IonHeader>
             <IonContent>
-                <IonButton id="add-station-button" color="secondary" onClick={() => setIsOpen(true)}>Add new
-                    station</IonButton>
+                <div>
+                    <IonButton id="add-station-button" color="secondary" fill="solid" onClick={() => setIsOpen(true)}>Add new
+                        station</IonButton>
+
+                    <div slot="end" id="sorting-list-buttons">
+                    <ListSorter
+                        stations={stations}
+                        setStations={setStations}
+                        defaultLocation={defaultLocation}/>
+                    </div>
+                </div>
+
 
 
                 <IonList>

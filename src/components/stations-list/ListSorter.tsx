@@ -36,8 +36,8 @@ export const ListSorter: React.FC<ListSorterProps> = ({
 
     return (
         <IonButtons slot="end">
-            <IonButton fill="outline" color="medium" onClick={sortListByName}> Sort by name </IonButton>
-            <IonButton fill="outline" color="medium" onClick={sortListByPosition}> Sort by position </IonButton>
+            <IonButton fill="outline" color="medium" shape="round" onClick={sortListByName}> Sort stations by name </IonButton>
+            <IonButton fill="outline" color="medium" shape="round" onClick={sortListByPosition}> Sort stations by position </IonButton>
         </IonButtons>
 
     );

@@ -15,27 +15,48 @@ const MapTab = () => {
     const [stations] = useAtom(wienerLinienStationsAtom);
     const center: [number, number] = [48.210033, 16.363449];
     const [currentLocation, setCurrentLocation] = useState<LatLngExpression | null>(null);
-
+    //const [watchId, setWatchId] = useState<string | null>(null);
 
     console.log("StationData:", stations.data)
 
-    const fetchCurrentPosition = async () => {
-        try {
-            const userPosition = await Geolocation.getCurrentPosition();
-
-            const {latitude, longitude} = userPosition.coords;
-
-            setCurrentLocation([latitude, longitude])
-
-        } catch (error) {
-            console.log("Error fetching device location", error)
-            alert("Unable to fetch location. Please ensure location permissions are enabled.");
-        }
-    };
-
-
     useEffect(() => {
-        fetchCurrentPosition();
+        const fetchCurrentPosition = async () => {
+            const permission = await Geolocation.requestPermissions();
+
+            if (permission.location == "granted" || permission.coarseLocation == "granted") {
+                const userPosition = await Geolocation.getCurrentPosition();
+                const {latitude, longitude} = userPosition.coords;
+                setCurrentLocation([latitude, longitude])
+            }
+
+        };
+
+        fetchCurrentPosition()
+            .then(() => console.log("Location fetched successfully"))
+            .catch((error) => {
+                console.error("Error fetching device location", error);
+            })
+
+        const watchForLocationUpdates = async () => {
+            const locationWatchId = await Geolocation.watchPosition({}, (position, err) => {
+                if (err) {
+                    console.error("Error watching for location updates:", err);
+                    return;
+                }
+                if (position) {
+                    const {latitude, longitude} = position.coords;
+
+                    console.log("Geolocation updated - new location:", position.coords);
+                    setCurrentLocation([latitude, longitude]);
+                }
+            });
+
+            return () => {
+                Geolocation.clearWatch({id: locationWatchId})
+            }
+        }
+        watchForLocationUpdates().then(() => console.log("Location successfully updated"))
+
     }, []);
 
     const RecenterButton = () => {
@@ -61,7 +82,6 @@ const MapTab = () => {
             </IonItem>
         );
     };
-
 
     const customIcon = new L.Icon({
         iconUrl: customStationMarkerUrl,

@@ -16,6 +16,7 @@ ion-item {
 ion-text {
     font-size: 14px;
     color: rgba(71, 76, 91, 0.97);
+    margin-left: 6px;
 }
 
 ion-icon {
