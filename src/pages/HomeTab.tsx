@@ -24,28 +24,20 @@ import {ListSorter} from "../components/stations-list/ListSorter";
 
 const HomeTab: React.FC = () => {
     const [wienerLinienStations] = useAtom(wienerLinienStationsAtom);
+    const [isOpen, setIsOpen] = useState(false);
 
-    //const [stations, setStations] = useState<Station[]>([])
+    const [stations, setStations] = useState<Station[]>();
 
-
-    //setStations(wienerLinienStations.data)
+    useEffect(() => {
+        if (wienerLinienStations?.data!==undefined) {
+            setStations(wienerLinienStations.data);
+        }
+    }, [wienerLinienStations?.data]);
 
     console.log("Stations:", wienerLinienStations)
 
-    const [isOpen, setIsOpen] = useState(false);
 
-
-    const saveDataToStorage = async (stations: Station[] | undefined) => {
-        try {
-            await store.set("stationData", JSON.stringify(stations))
-            alert("New station saved to storage")
-        } catch (error) {
-            console.log("Error saving data to storage", error)
-        }
-
-    };
-
-    const handleAddNewStation = async (
+    const handleAddNewStation = (
         stationName: string,
         cityName: string,
         latitude: number,
@@ -61,21 +53,34 @@ const HomeTab: React.FC = () => {
 
         console.log("new station", addedStation)
 
-        const newStationList = [addedStation, ...(wienerLinienStations.data || [])];
+        // @ts-ignore
+        const newStationList = [addedStation, ...stations];
 
         console.log("New List", newStationList)
 
 
-        // @ts-ignore
-        setWienerLinienStations(newStationList);
+        setStations(newStationList);
         setIsOpen(false);
 
-        await saveDataToStorage(newStationList);
+        saveDataToStorage(newStationList);
 
 
     }
+    const saveDataToStorage = async (stations: Station[] | undefined) => {
+        try {
+            await store.set("stationData", JSON.stringify(stations))
+            alert("New station saved to storage")
+        } catch (error) {
+            console.log("Error saving data to storage", error)
+        }
 
+    };
 
+    const sortListByName = () => {
+        const stationsByName = [... stations].sort((a, b) =>
+            a.NAME.localeCompare(b.NAME));
+        setStations(stationsByName)
+    }
 
     return (
         <IonPage>
@@ -83,13 +88,13 @@ const HomeTab: React.FC = () => {
                 <IonToolbar>
                     <IonTitle>List of Wiener Linien Stations</IonTitle>
                 </IonToolbar>
-                <ListSorter/>
+
             </IonHeader>
             <IonContent>
                 <IonButton id="add-station-button" color="secondary" onClick={() => setIsOpen(true)}>Add new
                     station</IonButton>
                 <IonList>
-                    {wienerLinienStations?.data?.map((station, index) => (
+                    {stations?.map((station, index) => (
                         <IonItem key={index}>
                             <IonIcon icon={pinOutline}/>{station.NAME} ({station.GEMEINDE})
                         </IonItem>
@@ -102,6 +107,10 @@ const HomeTab: React.FC = () => {
             <IonModal isOpen={isOpen}>
                 <NewStationModal onAdd={handleAddNewStation} onClose={() => setIsOpen(false)}/>
             </IonModal>
+            <IonButtons slot="end">
+                <IonButton onClick={sortListByName}> Sort by name </IonButton>
+                <IonButton> Sort by position </IonButton>
+            </IonButtons>
 
         </IonPage>
     );
