@@ -1,15 +1,7 @@
-import {
-    IonButton,
-    IonContent,
-    IonHeader,
-    IonInput, IonItem,
-    IonList,
-    IonToolbar
-} from "@ionic/react";
+import {IonButton, IonContent, IonHeader, IonInput, IonItem, IonList, IonToolbar} from "@ionic/react";
 import "./NewStationModal.css"
 import {useState} from "react";
 import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
 
 interface NewStationModalProps {
     onAdd: (name: string, gemeinde: string, latitude: number, longitude: number) => void;

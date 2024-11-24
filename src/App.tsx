@@ -7,7 +7,7 @@ import {
     IonTabBar,
     IonTabButton,
     IonTabs,
-    setupIonicReact, useIonViewWillLeave
+    setupIonicReact
 } from '@ionic/react';
 import {IonReactRouter} from '@ionic/react-router';
 import {home, information, map} from 'ionicons/icons';
@@ -37,15 +37,12 @@ import '@ionic/react/css/display.css';
  * For more info, please see:
  * https://ionicframework.com/docs/theming/dark-mode
  */
-
 /* import '@ionic/react/css/palettes/dark.always.css'; */
 /* import '@ionic/react/css/palettes/dark.class.css'; */
 import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import {useAtom} from "jotai";
-import {wienerLinienStationsAtom} from "./atoms/wiener-linien-stations.atom";
 import {Storage} from '@ionic/storage';
 import {useEffect, useState} from "react";
 

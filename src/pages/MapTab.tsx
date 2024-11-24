@@ -1,8 +1,8 @@
-import {IonButton, IonButtons, IonHeader, IonIcon, IonItem, IonPage, IonTitle, IonToolbar} from '@ionic/react';
-import {MapContainer, TileLayer, Marker, Popup, useMap} from "react-leaflet";
+import {IonButton, IonHeader, IonIcon, IonItem, IonPage, IonTitle, IonToolbar} from '@ionic/react';
+import {MapContainer, Marker, Popup, TileLayer, useMap} from "react-leaflet";
 import './MapTab.css';
 import "leaflet/dist/leaflet.css"
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useAtom} from "jotai";
 import {wienerLinienStationsAtom} from "../atoms/wiener-linien-stations.atom";
 import L, {LatLng, LatLngExpression, LatLngLiteral} from 'leaflet';
@@ -96,7 +96,6 @@ const MapTab = () => {
                 )}
             >
 
-
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -108,7 +107,6 @@ const MapTab = () => {
                     </Marker>
                 )))}
 
-
                 {currentLocation && (
                     <Marker position={currentLocation} icon={locationIcon}>
                         <Popup closeOnClick={true}> User Location </Popup>
@@ -117,7 +115,6 @@ const MapTab = () => {
 
                 <RecenterButton/>
             </MapContainer>
-
 
         </IonPage>
     );

@@ -1,11 +1,11 @@
 import {
-    IonButton, IonButtons,
+    IonButton,
     IonContent,
     IonHeader,
     IonIcon,
     IonItem,
     IonList,
-    IonMenu, IonModal,
+    IonModal,
     IonPage,
     IonTitle,
     IonToolbar
@@ -13,24 +13,26 @@ import {
 import './HomeTab.css';
 import {useAtom} from "jotai";
 import {Station, wienerLinienStationsAtom} from "../atoms/wiener-linien-stations.atom";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
 import {pinOutline} from "ionicons/icons";
 import {NewStationModal} from "../components/station-modal/NewStationModal";
 import {store} from "../App";
-import sortBy from "lodash/sortBy";
 import {ListSorter} from "../components/stations-list/ListSorter";
 
 const HomeTab: React.FC = () => {
     const [wienerLinienStations] = useAtom(wienerLinienStationsAtom);
     const [isOpen, setIsOpen] = useState(false);
 
-    const [stations, setStations] = useState<Station[]>();
+    const [stations, setStations] = useState<Station[]>([]);
+
+    const defaultLocation = { latitude: 48.2082, longitude: 16.3738 }; //Vienna coords
 
     useEffect(() => {
-        if (wienerLinienStations?.data!==undefined) {
+        if (wienerLinienStations?.data!=undefined) {
             setStations(wienerLinienStations.data);
+        } else {
+            setStations([]);
         }
     }, [wienerLinienStations?.data]);
 
@@ -53,7 +55,7 @@ const HomeTab: React.FC = () => {
 
         console.log("new station", addedStation)
 
-        // @ts-ignore
+
         const newStationList = [addedStation, ...stations];
 
         console.log("New List", newStationList)
@@ -76,23 +78,25 @@ const HomeTab: React.FC = () => {
 
     };
 
-    const sortListByName = () => {
-        const stationsByName = [... stations].sort((a, b) =>
-            a.NAME.localeCompare(b.NAME));
-        setStations(stationsByName)
-    }
 
     return (
         <IonPage>
             <IonHeader>
                 <IonToolbar>
                     <IonTitle>List of Wiener Linien Stations</IonTitle>
+                    <ListSorter
+                        stations={stations}
+                        setStations={setStations}
+                        defaultLocation={defaultLocation} />
+
                 </IonToolbar>
 
             </IonHeader>
             <IonContent>
                 <IonButton id="add-station-button" color="secondary" onClick={() => setIsOpen(true)}>Add new
                     station</IonButton>
+
+
                 <IonList>
                     {stations?.map((station, index) => (
                         <IonItem key={index}>
@@ -102,15 +106,14 @@ const HomeTab: React.FC = () => {
                     ))}
 
                 </IonList>
+
+
             </IonContent>
 
             <IonModal isOpen={isOpen}>
                 <NewStationModal onAdd={handleAddNewStation} onClose={() => setIsOpen(false)}/>
             </IonModal>
-            <IonButtons slot="end">
-                <IonButton onClick={sortListByName}> Sort by name </IonButton>
-                <IonButton> Sort by position </IonButton>
-            </IonButtons>
+
 
         </IonPage>
     );
